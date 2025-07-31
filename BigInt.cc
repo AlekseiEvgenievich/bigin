@@ -90,37 +90,70 @@ public:
                 
                 delete[] result;
             }
-            if((this->isPositive==false)&&(other.isPositive==false) ){
-                //delete[] this->symbols;
-                this->isPositive=false;
-            }
         }
         
         return *this;
     }
 
     BigInt& operator-=(const BigInt& other) {
+        bool isgreatrer;
+        if(this->length == other.length){
+            for(int j=0;j<=length-1;j++){
+                if(symbols[j] > other.symbols[j]){
+                    isgreatrer = true;
+                    break;
+                }
+                else{
+                    isgreatrer = false;
+                    isPositive = false;
+                    break;
+                }
+            }
+        }
+        if(this->length > other.length){
+            isgreatrer = true;
+        }
+        if(this->length < other.length){
+            std::cout << "this->length < other.length" << std::endl;
+            isgreatrer = false;
+            isPositive = false;
+        }
         int maxLen = std::max(this->length, other.length);
         int carry = 0;
-
+        
         char* result = new char[maxLen];
         int i = this->length - 1;
         int j = other.length - 1;
         int k = maxLen-1;
-
+        
+        int sum;
         while (i >= 0 || j >= 0 ) {
-            std::cout << "i " << i << std::endl;
-            std::cout << "j " << j << std::endl;
-           // std::cout << "carry " << carry << std::endl;
+          //  std::cout << "i " << i << std::endl;
+          //  std::cout << "j " << j << std::endl;
+          //  std::cout << "carry " << carry << std::endl;
             int a = (i >= 0) ? this->symbols[i] : 0;
             int b = (j >= 0) ? other.symbols[j] : 0;
-            int min = a - b;
-            if (min<0){
-                min  = 10 + a -b;
-                this->symbols[i-1] -=1;
+            if(isgreatrer == true){
+                std::cout << "true"<<std::endl;
+                sum = a - b  + carry;
             }
-            std::cout <<"min: " << min << std::endl;
-            result[k] = min;
+            else{
+                std::cout << "false"<<std::endl;
+                sum = b - a  + carry;
+            }
+            std::cout <<"sum: " << sum << std::endl;
+            if (sum < 0){
+                sum += 10;
+                carry = -1;
+                //this->symbols[i-1] -= 1;
+            }
+            else{
+                carry = 0;
+            }
+               // std::cout << "(k!=0)&&(sum!=0)" << std::endl;
+            result[k] = sum;
+            std::cout<<"k "<<k<<"result[k] " <<(char)(result[k]+'0') <<std::endl;
+            std::cout << "carry: " << carry << std::endl;
             k--;
             i--;
             j--;
@@ -150,7 +183,12 @@ public:
 
             delete[] result;
         }*/
-        
+        delete[] this->symbols;
+        this->symbols = result;
+        if(maxLen >length){
+            this->length+=(maxLen-length);
+        }
+        //++this->length;
         return *this;
     }
     
@@ -163,12 +201,18 @@ public:
     }
     void Print(){
         //std::cout << "hello"<<std::endl;
+        int k =1;
         if (isPositive==false){
             std::cout << "-";
         }
         for (int i=0; i<(this->length);++i){
            // std::cout << i<<std::endl;
-            std::cout <<(char)(this->symbols[i]+'0');
+            if ((this->symbols[i] == 0) && (k == 1)){
+            }
+            else{
+                std::cout <<(char)(this->symbols[i]+'0');
+                k = 0;
+            }
         }
     }
     
@@ -181,9 +225,9 @@ private:
 int main(){
   //  String s = {"abc",3};
   //  String b = s;
-    BigInt s1 = {"22",2};
-    BigInt s2 = {"89",2};
-    s1 += s2;
+    BigInt s1 = {"18",2};
+    BigInt s2 = {"55",2};
+    s1 -= s2;
    // std::cout << "hello"<<std::endl;
     s1.Print();
     return 1;
