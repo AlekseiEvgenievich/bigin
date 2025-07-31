@@ -33,69 +33,68 @@ public:
         delete[] symbols;
     }
     BigInt& operator+=(const BigInt& other) {
-        int maxLen = std::max(this->length, other.length);
-        int carry = 0;
-
-        char* result = new char[maxLen];
-        int i = this->length - 1;
-        int j = other.length - 1;
-        int k = maxLen-1;
-        
-
-        while (i >= 0 || j >= 0 ) {
-            std::cout << "i " << i << std::endl;
-            std::cout << "j " << j << std::endl;
-            std::cout << "carry " << carry << std::endl;
-            int a = (i >= 0) ? this->symbols[i] : 0;
-            int b = (j >= 0) ? other.symbols[j] : 0;
-            int sum = a + b + carry;
-            std::cout <<"sum: " << sum << std::endl;
-            carry = sum / 10;
-            sum = sum % 10;
-            result[k] = sum;
-            std::cout<<"k"<<k<<"result[k] " <<(char)(result[k]+'0') <<std::endl;
-            std::cout << "carry: " << carry << std::endl;
-            k--;
-            i--;
-            j--;
+        if(((this->isPositive==false)&&(other.isPositive==true)) || ((this->isPositive==true)&&(other.isPositive==false)) ) {
+            
         }
-        std::cout << "carry: " << carry << std::endl;
-        int resultLen = maxLen;
-        if (carry == 1) {
-            std::cout << "huuuu" << std::endl;
-            char* newSymbols = new char[maxLen + 1];
-            newSymbols[0] = carry;
-            std::cout << "newSymbols[0]" <<newSymbols[0]<<std::endl;
-            for (size_t i = 0; i < maxLen; ++i){
-                newSymbols[i + 1] = (char)(result[i]);
-                std::cout << "newSymbols[i + 1]" <<(char)(newSymbols[i + 1]+'0')<<std::endl;
-            }
-            delete[] this->symbols;
-            this->symbols = newSymbols;
-            ++this->length;
-        }
-        else{
-            std::cout << "fuuuu" << std::endl;
-            delete[] this->symbols;
-                  this->symbols = new char[resultLen];
-                  for (int m = 0; m < resultLen; ++m)
-                      this->symbols[m] = result[m];
-                  this->length = resultLen;
-
-            delete[] result;
-        }
-        if((this->isPositive==false)&&(other.isPositive==false) ){
+        if(((this->isPositive==false)&&(other.isPositive==false)) || ((this->isPositive==true)&&(other.isPositive==true)) ){
             //delete[] this->symbols;
-            this->isPositive=false;
-            /*char* new_array = new char[length+1];
-            new_array[0] = '-';
-            for (int m = 1; m < length+1; ++m)
-                new_array[m] = this->symbols[m-1];
-            delete[] this->symbols;
-            this->symbols = new_array;
-            ++this->length;*/
+            
+            int maxLen = std::max(this->length, other.length);
+            int carry = 0;
+            
+            char* result = new char[maxLen];
+            int i = this->length - 1;
+            int j = other.length - 1;
+            int k = maxLen-1;
+            
+            
+            while (i >= 0 || j >= 0 ) {
+                std::cout << "i " << i << std::endl;
+                std::cout << "j " << j << std::endl;
+                std::cout << "carry " << carry << std::endl;
+                int a = (i >= 0) ? this->symbols[i] : 0;
+                int b = (j >= 0) ? other.symbols[j] : 0;
+                int sum = a + b + carry;
+                std::cout <<"sum: " << sum << std::endl;
+                carry = sum / 10;
+                sum = sum % 10;
+                result[k] = sum;
+                std::cout<<"k"<<k<<"result[k] " <<(char)(result[k]+'0') <<std::endl;
+                std::cout << "carry: " << carry << std::endl;
+                k--;
+                i--;
+                j--;
+            }
+            std::cout << "carry: " << carry << std::endl;
+            int resultLen = maxLen;
+            if (carry == 1) {
+                std::cout << "huuuu" << std::endl;
+                char* newSymbols = new char[maxLen + 1];
+                newSymbols[0] = carry;
+                std::cout << "newSymbols[0]" <<newSymbols[0]<<std::endl;
+                for (size_t i = 0; i < maxLen; ++i){
+                    newSymbols[i + 1] = (char)(result[i]);
+                    std::cout << "newSymbols[i + 1]" <<(char)(newSymbols[i + 1]+'0')<<std::endl;
+                }
+                delete[] this->symbols;
+                this->symbols = newSymbols;
+                ++this->length;
+            }
+            else{
+                std::cout << "fuuuu" << std::endl;
+                delete[] this->symbols;
+                this->symbols = new char[resultLen];
+                for (int m = 0; m < resultLen; ++m)
+                    this->symbols[m] = result[m];
+                this->length = resultLen;
+                
+                delete[] result;
+            }
+            if((this->isPositive==false)&&(other.isPositive==false) ){
+                //delete[] this->symbols;
+                this->isPositive=false;
+            }
         }
-        
         
         return *this;
     }
