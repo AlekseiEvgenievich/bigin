@@ -3,11 +3,22 @@
 class BigInt{
 public:
     BigInt() = default;
-    BigInt(char* symbols_, size_t length_):length(length_){
-        symbols = new char[length];
-        for(int j = 0;j<length;++j ){
-            symbols[j] = symbols_[j]-'0';
-           // std::cout <<symbols[j]+'0'<<" "<<symbols_[j]  << std::endl;
+    BigInt(char* symbols_, size_t length_){
+        if (symbols_[0] == '-') {
+            isPositive = false;
+            length = length_ - 1;
+            symbols = new char[length];
+            for(int j = 0;j<length;++j ){
+                symbols[j] = symbols_[j+1]-'0';
+            }
+        }
+        else{
+            isPositive = true;
+            length = length_;
+            symbols = new char[length];
+            for(int j = 0;j<length;++j ){
+                symbols[j] = symbols_[j]-'0';
+            }
         }
     }
     BigInt(const BigInt& string){
@@ -29,6 +40,7 @@ public:
         int i = this->length - 1;
         int j = other.length - 1;
         int k = maxLen-1;
+        
 
         while (i >= 0 || j >= 0 ) {
             std::cout << "i " << i << std::endl;
@@ -72,6 +84,17 @@ public:
 
             delete[] result;
         }
+        if((this->isPositive==false)&&(other.isPositive==false) ){
+            //delete[] this->symbols;
+            char* new_array = new char[length+1];
+            new_array[0] = '-';
+            for (int m = 1; m < length+1; ++m)
+                new_array[m] = this->symbols[m-1];
+            delete[] this->symbols;
+            this->symbols = new_array;
+            ++this->length;
+        }
+        
         
         return *this;
     }
@@ -149,15 +172,17 @@ public:
 private:
     char * symbols;
     size_t length;
+    bool isPositive;
 };
 
 int main(){
   //  String s = {"abc",3};
   //  String b = s;
-    BigInt s1 = {"14",2};
-    BigInt s2 = {"5",1};
-   s1 -= s2;
+    BigInt s1 = {"-2",2};
+    BigInt s2 = {"-4",2};
+    s1 += s2;
    // std::cout << "hello"<<std::endl;
     s1.Print();
     return 1;
 }
+
