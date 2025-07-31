@@ -86,13 +86,14 @@ public:
         }
         if((this->isPositive==false)&&(other.isPositive==false) ){
             //delete[] this->symbols;
-            char* new_array = new char[length+1];
+            this->isPositive=false;
+            /*char* new_array = new char[length+1];
             new_array[0] = '-';
             for (int m = 1; m < length+1; ++m)
                 new_array[m] = this->symbols[m-1];
             delete[] this->symbols;
             this->symbols = new_array;
-            ++this->length;
+            ++this->length;*/
         }
         
         
@@ -163,6 +164,9 @@ public:
     }
     void Print(){
         //std::cout << "hello"<<std::endl;
+        if (isPositive==false){
+            std::cout << "-";
+        }
         for (int i=0; i<(this->length);++i){
            // std::cout << i<<std::endl;
             std::cout <<(char)(this->symbols[i]+'0');
@@ -178,11 +182,10 @@ private:
 int main(){
   //  String s = {"abc",3};
   //  String b = s;
-    BigInt s1 = {"-2",2};
-    BigInt s2 = {"-4",2};
+    BigInt s1 = {"22",2};
+    BigInt s2 = {"89",2};
     s1 += s2;
    // std::cout << "hello"<<std::endl;
     s1.Print();
     return 1;
 }
-
